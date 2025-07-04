@@ -3,6 +3,7 @@ name: Telegram API Monitor
 on:
   schedule:
     - cron: "* * * * *"
+    workflow_dispatch:
 
 jobs:
   check-api:
