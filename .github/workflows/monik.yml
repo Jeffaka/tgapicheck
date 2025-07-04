@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -21,13 +21,22 @@ jobs:
       - name: Install requests
         run: pip install requests
 
-      - name: Restore API status from cache
-        id: cache-status
-        uses: actions/cache@v4
-        with:
-          path: status.txt
-          key: api-status
-
-      - name: Create default status file if missing
+      - name: Create status file if missing
         run: |
-          if [ ! -f status.]()
+          if [ ! -f status.txt ]; then
+            echo "ok" > status.txt
+          fi
+
+      - name: Run monitor
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python3 monitor.py
+
+      - name: Save status
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add status.txt
+          git commit -m "update status" || echo "No changes"
+          git push || echo "No push permissions"
