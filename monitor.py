@@ -38,6 +38,6 @@ except Exception as e:
     if last_status != "fail":
         send_message(f"🚨 Помилка підключення до Telegram API: {e}")
 
-# Запис нового стану
+# Запис нового стану ль
 with open("status.txt", "w") as f:
     f.write(current_status)
